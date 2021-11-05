@@ -16,7 +16,7 @@ import {
     VStack,
     InputRightAddon,
 } from "@chakra-ui/react"
-import { Card } from '@components/design/Card'
+import { Card } from '@components/design/Card' 
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 
 
@@ -26,15 +26,17 @@ const Home: React.FC = () => {
     const [schoolSearch, setSchoolSearch] = React.useState<NCESSchoolFeatureAttributes[]>([]);
     
     const demo = async () => { // see console for api result examples
+        
         setSearching(true)
         const demoDistrictSearch = await searchSchoolDistricts("Peninsula School District")
         setDistrictSearch(demoDistrictSearch)
         console.log("District example", demoDistrictSearch)
 
-        const demoSchoolSearch = await searchSchools("k", demoDistrictSearch[1].LEAID)
+        const demoSchoolSearch = await searchSchools("k", demoDistrictSearch[1].LEAID) //school ID number??
         setSchoolSearch(demoSchoolSearch)
         console.log("School Example", demoSchoolSearch)
         setSearching(false)
+        
     }
 
     useEffect(() => {
@@ -43,7 +45,7 @@ const Home: React.FC = () => {
     
     return (
         <Center padding="100px" height="90vh">
-            <ScaleFade initialScale={0.9} in={true}>
+            <ScaleFade initialScale={0.9} in={true} >
                 <Card variant="rounded" borderColor="blue">
                     <Heading>School Data Finder</Heading>
                     <Text>
@@ -61,6 +63,14 @@ const Home: React.FC = () => {
                         {searching ? <Spinner /> : <></>}< br />
                         {districtSearch.length} Demo Districts<br />
                         {schoolSearch.length} Demo Schools<br />
+                        District 1 response: 
+                        <OrderedList>
+                        {schoolSearch.map((result) => (
+                         
+                                <ListItem key={result.LEAID}>{result.NAME}</ListItem>
+                           
+                        ))}
+                        </OrderedList>
                     </Text>
                 </Card>
             </ScaleFade>
