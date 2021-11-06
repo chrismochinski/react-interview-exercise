@@ -1,5 +1,5 @@
 export const Input = {
     baseStyle: {
-        bg: "white"
+        bg: "white",
     }
 }

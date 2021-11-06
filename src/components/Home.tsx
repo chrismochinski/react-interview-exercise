@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+  Container,
   Button,
   Center,
   Heading,
@@ -57,38 +58,60 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <Center padding="100px" height="90vh">
-      <ScaleFade initialScale={0.9} in={true}>
-        <Card variant="rounded" borderColor="blue">
-          <Heading>School Data Finder</Heading>
-          <Text>Welcome to my little search function! My own site is {" "}
-            <a href="https://www.chrismochinski.com" target="_blank">
-               <b>HERE</b>.
-            </a>{" "}
-            I didn't know Chakra before I started this, so I thought I'd give it a shot!<br />
-            <OrderedList>
-              <ListItem>Search for a district</ListItem>
-              <ListItem>
-                Search for a school within the district (or bypass district
-                filter)
-              </ListItem>
-              <ListItem>View all returned data in an organized way</ListItem>
+      <Center padding="100px" height="90vh">
+        <ScaleFade initialScale={0.9} in={true}>
+          <Card variant="rounded" borderColor="blue">
+            <Heading>School Data Finder</Heading>
+            <Text>
+              Welcome to my little search function!<br />
+              I didn't know Chakra before I started this, so I thought I'd give
+              it a shot!
+              <br />
+              {/* <OrderedList>
+                <ListItem>Search for a district</ListItem>
+                <ListItem>
+                  Search for a school within the district (or bypass district
+                  filter)
+                </ListItem>
+                <ListItem>View all returned data in an organized way</ListItem>
+              </OrderedList> */}
+            </Text>
+            <Divider margin={4} />
+            <Text>
+              {/* inline styling temporary - //deletelater */}
+              <Input
+                placeholder="Search for a school"
+                size="md"
+              />{" "}
+              <Button>Search</Button>
+              <Input
+                placeholder="Search for a District"
+                size="md"
+              />{" "}
+              <Button>Search</Button>
+              <br />
+              {searching ? <Spinner /> : <></>}
+              <br />
+              {districtSearch.length} Demo Districts!
+              <br />
+              District response:
+              <OrderedList>
+              {districtSearch.map((result) => (
+                <ListItem key={result.LEAID}>{result.NAME}</ListItem>
+              ))}
             </OrderedList>
-          </Text>
-          <Divider margin={4} />
-          <Text>
-            Check the console for example of returned data. <b>Happy coding!</b>
             <br />
-            {searching ? <Spinner /> : <></>}
+            {schoolSearch.length} Demo Schools!
             <br />
-            {districtSearch.length} Demo Districts!
-            <br />
-            District response:
-           
-          </Text>
-        </Card>
-      </ScaleFade>
-    </Center>
+            <OrderedList>
+              {schoolSearch.map((result) => (
+                <ListItem key={result.LEAID}>{result.NAME}</ListItem>
+              ))}
+            </OrderedList>
+            </Text>
+          </Card>
+        </ScaleFade>
+      </Center>
   );
 };
 

@@ -6,8 +6,8 @@ export const CardTheme = {
     baseStyle: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
-      gap: 6,
+      alignItems: "left",
+      gap: 20,
     },
     // Two variants: rounded and smooth
     variants: {
@@ -15,7 +15,7 @@ export const CardTheme = {
         padding: 8,
         borderRadius: "40px",
         boxShadow: "xl",
-        border: "2px solid"
+        border: "2px solid",
       },
       smooth: {
         padding: 6,
