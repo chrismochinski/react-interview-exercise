@@ -64,3 +64,36 @@ code {
 .header-img {
   user-select: none;
 }
+
+// -------------added by mo-------------- //
+
+.i-icon {
+  margin-left: 2px;
+transform: scale(1.1);
+cursor: pointer;
+transition-duration: .3s;
+}
+
+.i-icon:hover {
+  transition-duration: .3s;
+  color: #DDB94F;
+}
+
+.too-many-results-header {
+  font-weight: 500;
+  color: rgb(171, 0, 0);
+  font-size: 22px;
+}
+
+.map-heading {
+  font-weight: 300;
+  font-size: 30px;
+}
+
+
+// @media screen and (max-width: 768px) {
+//   .i-icon {
+//     margin-left: 2px;
+//   transform: scale(5)
+//   }
+// }
