@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Container, Button, IconButton, Text } from "@chakra-ui/react";
+import { SlideFade } from "@chakra-ui/react";
 import { Card } from "@components/design/Card";
+import { googleMapsKey } from "@utils/maps";
 
 import {
   GoogleMap,
@@ -17,6 +18,8 @@ type mapProps = {
 };
 
 const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
+
+
   const containerStyle = {
     width: "300px",
     height: "300px",
@@ -27,23 +30,21 @@ const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
     lng: lon,
   };
 
-//   useEffect(() => {
-//       const location = {lat, lon}
-//   })
-
   return (
     <>
-      <LoadScript googleMapsApiKey="AIzaSyA6ybJwxJZgd0t91Xx_QEr_4FU5hph0ifM">
+          <SlideFade offsetY="20px" in={true}>
+
+      <LoadScript googleMapsApiKey={googleMapsKey}>
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
-          {/* Child components, such as markers, info windows, etc. */}
+          <Marker
+        position={center}
+        clickable={true}
+        // draggable={true}
+      ></Marker>
         </GoogleMap>
       </LoadScript>
+      </SlideFade>
 
-      {/* <Marker
-        // position={location}
-        clickable={true}
-        draggable={true}
-      ></Marker> */}
     </>
   );
 };

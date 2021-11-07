@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Search2Icon, InfoIcon } from "@chakra-ui/icons";
-
 import DetailsComponent from "./DetailsComponent";
 
 import {
@@ -17,13 +16,8 @@ import {
   Spinner,
   InputGroup, // Some Chakra components that might be usefull
   HStack,
-  VStack,
-  InputRightAddon,
   UnorderedList,
   InputRightElement,
-  Flex,
-  Stack,
-  Grid,
   SimpleGrid,
   Box,
   IconButton,
@@ -35,7 +29,6 @@ import {
   NCESDistrictFeatureAttributes,
   NCESSchoolFeatureAttributes,
 } from "@utils/nces";
-// import { extraInfo } from "@utils/extraInfo"; // for props / separate in case I want to adjust
 
 const Home: React.FC = () => {
   const [searching, setSearching] = useState(false);
@@ -54,6 +47,7 @@ const Home: React.FC = () => {
     event.preventDefault();
     if (!userDistrictInput) {
       console.log("error - form required");
+
     } else {
       setSearching(true);
       console.log("in handleDistrictClick, searching:", userDistrictInput);
@@ -78,7 +72,7 @@ const Home: React.FC = () => {
 
   const resultHeader = () => {
     if (0 === districtSearch.length) {
-      return `Let's run a search!`;
+      return ;
     } else if (1 === districtSearch.length) {
       return `1 District Result for "${userDistrictInput}"`;
     } else if (100 < districtSearch.length) {
@@ -103,16 +97,14 @@ const Home: React.FC = () => {
       console.log("sorry - location service unavailable");
     } else {
       console.log("Latitude:", selectedObject.LAT);
-      console.log("Longitude:", selectedObject.LON);
-      // setSelectionLat(selectedObject.LAT);
-      // setSelectionLon(selectedObject.LON);
+      console.log("Longitude:", selectedObject.LON)
       setSelection(selectedObject);
     }
   };
 
   return (
-    <Center padding="100px" height="90vh">
-      <Container maxW="container.lg">
+    <Center padding="100px 0" >
+      <Container className="home-container" maxW="container.lg">
         <ScaleFade initialScale={0.9} in={true}>
           <Card variant="rounded" borderColor="blue">
             <Heading align="center" textTransform="uppercase" fontWeight="600">
@@ -142,7 +134,7 @@ const Home: React.FC = () => {
               </HStack>
             </form>
 
-            <SimpleGrid columns={2} spacing={10}>
+            <SimpleGrid minChildWidth="300px" columns={2} spacing={10}>
               <Box>
                 <Text fontWeight="400">
                   {searching ? <Spinner /> : <></>}
@@ -158,11 +150,6 @@ const Home: React.FC = () => {
                       {districtSearch.map((result) => (
                         <ListItem fontWeight="200" key={result.NAME}>
                           {result.NAME}{" "}
-                          <InfoIcon
-                            className="i-icon"
-                            color="#DDB94F85"
-                            onClick={() => displayExtraInfo(result)}
-                          />
                         </ListItem>
                       ))}
                     </UnorderedList>
@@ -202,13 +189,13 @@ const Home: React.FC = () => {
                   lat={selection.LAT}
                   lon={selection.LON}
                   name={selection.NAME}
-
                   street={selection.STREET}
                   city={selection.CITY}
                   state={selection.STATE}
                   zip={selection.ZIP}
                   county={selection.NMCNTY}
                   schoolSelected={schoolSelected}
+                  // selection={selection}
                 />
 
               </Box>

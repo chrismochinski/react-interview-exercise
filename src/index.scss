@@ -29,6 +29,7 @@ code {
     -webkit-backdrop-filter: blur(10px) saturate(1.8);
     backdrop-filter: blur(10px) saturate(1.8);
     background-color: rgba(255, 255, 255, 0.8);  
+    position: sticky;
     // border-bottom: 2px solid var(--chakra-colors-brand-blue);
   }
 }
@@ -86,9 +87,15 @@ transition-duration: .3s;
 }
 
 .map-heading {
-  font-weight: 300;
+  font-weight: 500;
   font-size: 30px;
 }
+
+.home-container {
+ 
+}
+
+
 
 
 // @media screen and (max-width: 768px) {
