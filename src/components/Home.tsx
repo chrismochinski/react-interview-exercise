@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Search2Icon, InfoIcon } from "@chakra-ui/icons";
 
-import Map from "./Map";
+import DetailsComponent from "./DetailsComponent";
 
 import {
   Container,
@@ -197,10 +197,16 @@ const Home: React.FC = () => {
                 </Text>
               </Box>
               <Box w="100%">
-                <Map
+                <DetailsComponent
                   lat={selection.LAT}
                   lon={selection.LON}
                   name={selection.NAME}
+                  
+                  street={selection.STREET}
+                  city={selection.CITY}
+                  state={selection.STATE}
+                  zip={selection.ZIP}
+                  county={selection.NMCNTY}
                 />
               </Box>
             </SimpleGrid>
