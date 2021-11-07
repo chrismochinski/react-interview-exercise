@@ -1,7 +1,8 @@
 export const Button = {
     // The styles all button have in common
     baseStyle: {
-      fontWeight: "bold",
+      bg: "#DDB94F",
+      fontWeight: "300",
       borderRadius: "25px", // <-- border radius is same for all variants and sizes
       _hover: {
         bg: "black"
@@ -26,10 +27,10 @@ export const Button = {
         border: "2px solid",
       },
       ghost: {
-        border: "0px solid"
+        border: "1px solid black"
       },
       solid: {
-        color: "white",
+        color: "1px solid black",
       },
     },
     // The default size and variant values
