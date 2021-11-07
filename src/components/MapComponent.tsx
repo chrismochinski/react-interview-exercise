@@ -27,13 +27,13 @@ const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
     lng: lon,
   };
 
-  useEffect(() => {
-      const location = {lat, lon}
-  })
+//   useEffect(() => {
+//       const location = {lat, lon}
+//   })
 
   return (
     <>
-      <LoadScript googleMapsApiKey="AIzaSyAOBXNFthjOSS9VQZXBlxdqUQzt53LOGUQ">
+      <LoadScript googleMapsApiKey="AIzaSyA6ybJwxJZgd0t91Xx_QEr_4FU5hph0ifM">
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
           {/* Child components, such as markers, info windows, etc. */}
         </GoogleMap>

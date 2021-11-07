@@ -35,7 +35,7 @@ import {
   NCESDistrictFeatureAttributes,
   NCESSchoolFeatureAttributes,
 } from "@utils/nces";
-import { extraInfo } from "@utils/extraInfo"; // for props / separate in case I want to adjust
+// import { extraInfo } from "@utils/extraInfo"; // for props / separate in case I want to adjust
 
 const Home: React.FC = () => {
   const [searching, setSearching] = useState(false);
@@ -46,10 +46,9 @@ const Home: React.FC = () => {
     NCESSchoolFeatureAttributes[] //school search
   >([]);
 
-  const [userDistrictInput, setUserDistrictInput] = useState(""); // user input search string
-  // const [selectionLat, setSelectionLat] = useState<extraInfo>(); // longitude of selection (this may go away)
-  // const [selectionLon, setSelectionLon] = useState<extraInfo>(); // latitude of selection (this may go away)
-  const [selection, setSelection] = useState<extraInfo>({}); //when user clicks the icon for more info
+  const [userDistrictInput, setUserDistrictInput] = useState(""); //user search input
+  const [selection, setSelection] = useState({});  //user selection
+  const [schoolSelected, setSchoolSelected] = useState(false) //determines whether we display map
 
   const handleDistrictClick = async (event: any) => {
     event.preventDefault();
@@ -99,6 +98,7 @@ const Home: React.FC = () => {
 
   const displayExtraInfo = (selectedObject: any) => {
     console.log("clicked", selectedObject.NAME);
+    setSchoolSelected(true);
     if (undefined === selectedObject.LAT || undefined === selectedObject.LON) {
       console.log("sorry - location service unavailable");
     } else {
@@ -197,17 +197,20 @@ const Home: React.FC = () => {
                 </Text>
               </Box>
               <Box w="100%">
+
                 <DetailsComponent
                   lat={selection.LAT}
                   lon={selection.LON}
                   name={selection.NAME}
-                  
+
                   street={selection.STREET}
                   city={selection.CITY}
                   state={selection.STATE}
                   zip={selection.ZIP}
                   county={selection.NMCNTY}
+                  schoolSelected={schoolSelected}
                 />
+
               </Box>
             </SimpleGrid>
           </Card>
