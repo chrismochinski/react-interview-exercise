@@ -27,7 +27,9 @@ export const Button = {
         border: "2px solid",
       },
       ghost: {
-        border: "1px solid black"
+        border: "none",
+        color: "#fff",
+        textTransform: "uppercase",
       },
       solid: {
         color: "1px solid black",

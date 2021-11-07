@@ -9,7 +9,6 @@ import {
   Icon,
   Input,
   ScaleFade,
-  OrderedList,
   Divider,
   ListItem,
   Spinner,
@@ -17,6 +16,7 @@ import {
   HStack,
   VStack,
   InputRightAddon,
+  UnorderedList,
   InputRightElement,
   Flex,
   Stack,
@@ -30,59 +30,50 @@ import {
 } from "@utils/nces";
 
 const Home: React.FC = () => {
-  const [searching, setSearching] = useState(false);
+  const [searching, setSearching] = useState(false); //for loading
   const [districtSearch, setDistrictSearch] = useState<
-    NCESDistrictFeatureAttributes[]
+    NCESDistrictFeatureAttributes[] //district search
   >([]);
   const [schoolSearch, setSchoolSearch] = useState<
-    NCESSchoolFeatureAttributes[]
+    NCESSchoolFeatureAttributes[] //school search
   >([]);
 
-  const [userSchoolInput, setUserSchoolInput] = useState("");
+
+
   const [userDistrictInput, setUserDistrictInput] = useState("");
 
-  const demo = async () => {
-    // see console for api result examples
+  
+  const handleDistrictClick = async (event: any) => {
+    event.preventDefault();
+    if (!userDistrictInput) {
+      console.log("error - form required");
+    } else {
+      setSearching(true);
+      console.log("in handleDistrictClick, searching:", userDistrictInput);
 
-    setSearching(true);
-    const demoDistrictSearch = await searchSchoolDistricts(
-      "Peninsula School District"
-    );
-    setDistrictSearch(demoDistrictSearch);
-    console.log("District example", demoDistrictSearch);
+      //updated paste from demo
+      const demoDistrictSearch = await searchSchoolDistricts(
+        // "Peninsula School District" (demo data)
+        userDistrictInput //user input variable
 
-    const demoSchoolSearch = await searchSchools(
-      "k",
-      demoDistrictSearch[1].LEAID
-    ); //school ID number??
-    setSchoolSearch(demoSchoolSearch);
-    console.log("School Example", demoSchoolSearch);
+      );
+      setDistrictSearch(demoDistrictSearch);
+      console.log("List of district responses", demoDistrictSearch);
+  
+      const demoSchoolSearch = await searchSchools(
+        "k",
+        demoDistrictSearch[0].LEAID
+      );
+      setSchoolSearch(demoSchoolSearch);
+     
+
+      console.log("List of associated", demoSchoolSearch);
+
+   //updated 
+
+    }
     setSearching(false);
   };
-
-  // useEffect(() => { //important for testing!
-  //   demo();
-  // }, []);
-
-  const handleSchoolClick = (event: any) => {
-    event.preventDefault();
-    console.log("in handleSchoolClick, searching:", userSchoolInput);
-  };
-
-  const handleDistrictClick = (event: any) => {
-    event.preventDefault();
-    console.log("in handleSchoolClick, search:", userDistrictInput);
-  };
-
-  // const handleSchoolClick = React.useCallback((event) => {
-  //   event.preventDefault();
-  //   console.log("in handleSchoolClick");
-  // }, []);
-
-  // const handleDistrictClick = React.useCallback((event) => {
-  //   event.preventDefault();
-  //   console.log("in handleDistrictClick");
-  // }, []);
 
   return (
     <Center padding="100px" height="90vh">
@@ -91,50 +82,17 @@ const Home: React.FC = () => {
           <Heading align="center" textTransform="uppercase" fontWeight="600">
             School Data Finder
           </Heading>
-          <Text fontWeight="300" >
+          <Text fontWeight="300">
             Welcome to my little search function!
             <br />
             I didn't know Chakra before I started this, so I thought I'd give it
-            a shot...since I love learning and getting better and am even willing to get out of my comfort zone and do this during a coding chalenge ;)
+            a shot...since I love learning and getting better and am even
+            willing to get out of my comfort zone and do this during a big coding
+            challenge
             <br />
           </Text>
           <Divider style={{ margin: "10px 0" }} />
-          <form onSubmit={() => handleSchoolClick(event)}>
-            <HStack spacing="24px">
-              <InputGroup>
-                <Input
-                  placeholder="Search Schools"
-                  size="md"
-                  onChange={(event) => setUserSchoolInput(event.target.value)}
-                />
-
-                <InputRightElement
-                  children={<Search2Icon color="#0070ac43" />}
-                />
-              </InputGroup>
-              <Button type="submit" size="md" variant="ghost">
-                Search
-              </Button>
-            </HStack>
-          </form>
-
-          <Text fontWeight="400">
-            {searching ? <Spinner /> : <></>}
-            {!searching && schoolSearch.length < 1 ? (
-              <Text>Let's search for schools!</Text>
-            ) : (
-              <Text>{schoolSearch.length} School Results</Text>
-            )}
-            {/* {schoolSearch.length} Demo Schools! */}
-            <br />
-            <OrderedList>
-              {schoolSearch.map((result) => (
-                <ListItem fontWeight="200" key={result.NAME}>
-                  {result.NAME}
-                </ListItem>
-              ))}
-            </OrderedList>
-          </Text>
+         
 
           <form onSubmit={() => handleDistrictClick(event)}>
             <HStack spacing="24px">
@@ -156,22 +114,50 @@ const Home: React.FC = () => {
           <Text fontWeight="400">
             {searching ? <Spinner /> : <></>}
 
+
+
+
             {!searching && schoolSearch.length < 1 ? (
               <Text>Let's search for districts!</Text>
             ) : (
               <Text>{districtSearch.length} District Results</Text>
             )}
 
+
+
+
             {/* {districtSearch.length} Demo Districts! */}
             <br />
-            <OrderedList>
+            <UnorderedList>
               {districtSearch.map((result) => (
                 <ListItem fontWeight="200" key={result.NAME}>
                   {result.NAME}
                 </ListItem>
               ))}
-            </OrderedList>
+            </UnorderedList>
           </Text>
+
+
+          <Text fontWeight="400">
+            {searching ? <Spinner /> : <></>}
+            {!searching && schoolSearch.length < 1 ? (
+              <></>
+            ) : (
+              <Text className="schoolResultsTitle">{schoolSearch.length} School Results</Text>
+            )}
+            {/* {schoolSearch.length} Demo Schools! */}
+            <br />
+            <UnorderedList>
+              {schoolSearch.map((result) => (
+                <ListItem fontWeight="200" key={result.NAME}>
+                  {result.NAME}
+                </ListItem>
+              ))}
+            </UnorderedList>
+          </Text>
+
+
+
         </Card>
       </ScaleFade>
     </Center>
