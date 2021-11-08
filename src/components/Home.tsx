@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Search2Icon, InfoIcon } from "@chakra-ui/icons";
 import DetailsComponent from "./DetailsComponent";
+import { useDisclosure } from "@chakra-ui/react";
 
 import {
   Container,
@@ -13,7 +14,7 @@ import {
   Divider,
   ListItem,
   Spinner,
-  InputGroup, // Some Chakra components that might be usefull
+  InputGroup,
   HStack,
   UnorderedList,
   InputRightElement,
@@ -30,6 +31,7 @@ import {
 } from "@utils/nces";
 
 const Home: React.FC = () => {
+
   const [searchingDistrict, setSearchingDistrict] = useState(false); //left box content - search results for districts & schools
   const [searchingSchool, setSearchingSchool] = useState(false); //searing school boolean state
 
@@ -49,13 +51,12 @@ const Home: React.FC = () => {
 
   const handleSearchClick = async (event: any) => {
     event.preventDefault();
-    setInitialSchoolClick(false); 
+    setInitialSchoolClick(false);
     setSchoolSelected(false); //has a school been selected? If false, clear details (right column)
     setSchoolSearch([]); //clear school search array (middle column)
     setSelection({});
     if (!userDistrictInput) {
       console.log("error - form required");
-      //fix fire error toast
     } else {
       setSearchingDistrict(true);
       console.log("in handleSearchClick, searching:", userDistrictInput);
@@ -76,7 +77,8 @@ const Home: React.FC = () => {
     setSchoolSelected(false);
     setSearchingSchool(true);
     console.log("selected:", selectedDistrict);
-    const commitSchoolSearch = await searchSchools("k", selectedDistrict);
+    const commitSchoolSearch = await searchSchools("k", selectedDistrict); 
+    // I never quite figured out what the "k" was for and I'm real curious!
     console.log("List of associated schools:", commitSchoolSearch);
     setSchoolSearch(commitSchoolSearch);
     setSearchingSchool(false);
@@ -119,13 +121,12 @@ const Home: React.FC = () => {
     }
   };
 
+  // school list item clicked
   const displayExtraInfo = (selectedObject: any) => {
     console.log("clicked", selectedObject.NAME);
     setSchoolSelected(true);
     if (undefined === selectedObject.LAT || undefined === selectedObject.LON) {
-      //null check
-      console.log("sorry - location service unavailable");
-      //fix fire error toast
+      console.log("sorry - location service unavailable"); //null check
     } else {
       console.log("Latitude:", selectedObject.LAT);
       console.log("Longitude:", selectedObject.LON);
@@ -149,6 +150,7 @@ const Home: React.FC = () => {
 
             <Divider style={{ margin: "10px 0" }} />
 
+            {/* FORM: strictly for user input of a district  */}
             <form onSubmit={() => handleSearchClick(event)}>
               <HStack spacing="24px">
                 <InputGroup>
@@ -171,7 +173,10 @@ const Home: React.FC = () => {
               </HStack>
             </form>
 
+            {/* GRID, three columns: districts, schools, more info/map */}
+            {/* Rows are basic responsive on screen collapse  */}
             <SimpleGrid minChildWidth="250px" columns={3} spacing={8}>
+              {/* Box 1 - left side - district results */}
               <Box className="boxLeft">
                 <Text fontWeight="400">
                   {searchingDistrict ? <Spinner /> : <></>}
@@ -199,6 +204,7 @@ const Home: React.FC = () => {
                 <br />
               </Box>
 
+              {/* Box 2 - center - school results */}
               <Box className="boxCenter">
                 <Text fontWeight="400">
                   {searchingSchool ? <Spinner /> : <></>}
@@ -220,6 +226,8 @@ const Home: React.FC = () => {
                   ))}
                 </UnorderedList>
               </Box>
+
+              {/* Box 3 - right side - more info */}
               <Box className="boxRight">
                 <DetailsComponent
                   lat={selection.LAT!}

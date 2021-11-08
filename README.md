@@ -1,12 +1,18 @@
-# Hello Aspiring Applicant!
+# Mo's School Data Finder!
 
-This coding exercise is meant to allow you to demonstrate creative problem solving and modern web development understanding. Feel free to stretch the boundaries of the prompt to showcase your personal preferences and skills. 
+## This app...
 
-- Add any npm modules you may need for best practices
-- Make any changes to this repository as you see fit
-- Use comments to critique and guide code review
+🍩 Searches for a US school district<br />
+🍩 Expands on a button click to show associated schools <br />
+🍩 Expands _again_ on _another_ button click to show details about that school
 
-## [Demo](https://characterstrong.github.io/react-interview-exercise/)
+---
+
+### [<u>Original Demo</u>](https://characterstrong.github.io/react-interview-exercise/)
+
+## New Demo:
+
+---
 
 ## Overview of this repository
 
@@ -53,3 +59,14 @@ The goal of this exercise is to build a prototype utility that gives users abili
 ## What Happens Next?
 
 CharacterStrong tech team will review your Github Fork, share the built interface with interested colleagues, and reach out to you so we can review your submission and ask questions.
+
+
+
+<img align="left" src="./README-visuals/readme-signature-pic.png" alt="mo" style="width:150px; margin: 10px">
+
+
+_[My Website](https://chrismochinski.com)_ <br />
+_[My LinkedIn](https://www.linkedin.com/in/chrismochinski/)_ <br />
+_[My Twitter (@HolyMosesMusic)](https://twitter.com/holymosesmusic)_ <br />
+_[My GitHub](https://github.com/chrismochinski)_ <br />
+

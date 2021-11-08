@@ -1,3 +1,5 @@
+import { searchSchoolDistricts } from "@utils/nces";
+
 export const Button = {
     // The styles all button have in common
     baseStyle: {
@@ -5,7 +7,8 @@ export const Button = {
       fontWeight: "300",
       borderRadius: "25px", // <-- border radius is same for all variants and sizes
       _hover: {
-        bg: "black"
+        bg: "black",
+        color: "black",
       }
     },
     // Two sizes: sm and md

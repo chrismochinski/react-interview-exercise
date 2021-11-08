@@ -29,7 +29,7 @@ const DetailsComponent: React.FC<infoProps> = ({
   return (
     <>
       {!schoolSelected ? (
-        <></>
+        <></> //render nothing if no school is selected
       ) : (
         <div>
           <Text className="map-heading">{name}</Text>
