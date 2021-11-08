@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 type infoProps = {
-  lat: number;
-  lon: number;
-  name: string;
-  street: string;
-  city: string;
-  state: string;
-  zip: number;
-  county: string;
+  lat?: number;
+  lon?: number;
+  name?: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  county?: string;
   schoolSelected: boolean;
 };
 
@@ -28,22 +28,24 @@ const DetailsComponent: React.FC<infoProps> = ({
   schoolSelected,
 }) => {
   return (
-    <div>
+    <>
+      {!schoolSelected ? (
+        <></>
+      ) : (
+        <div>
           <Text className="map-heading">{name}</Text>
           <Text>{street}</Text>
 
-          {!city ? (
-            <></>
-          ) : (
-            <Text>
-              {city}, {state} {zip}
-            </Text>
-          )}
+          <Text>
+            {city}, {state} {zip}
+          </Text>
 
           <Text>{county}</Text>
           <br />
-          {!schoolSelected ? <></> : <MapComponent lat={lat} lon={lon} />}
-    </div>
+          <MapComponent lat={lat} lon={lon} />
+        </div>
+      )}
+    </>
   );
 };
 

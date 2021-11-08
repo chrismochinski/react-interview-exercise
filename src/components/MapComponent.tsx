@@ -13,12 +13,11 @@ import {
 
 type mapProps = {
   //props items
-  lat: number;
-  lon: number;
+  lat?: number;
+  lon?: number;
 };
 
 const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
-
 
   const containerStyle = {
     width: "300px",
@@ -32,19 +31,21 @@ const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
 
   return (
     <>
-          <SlideFade offsetY="20px" in={true}>
-
-      <LoadScript googleMapsApiKey={googleMapsKey}>
-        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
-          <Marker
-        position={center}
-        clickable={true}
-        // draggable={true}
-      ></Marker>
-        </GoogleMap>
-      </LoadScript>
+      <SlideFade offsetY="20px" in={true}>
+        <LoadScript googleMapsApiKey={googleMapsKey}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
+          >
+            <Marker
+              position={center}
+              clickable={true}
+              // draggable={true}
+            ></Marker>
+          </GoogleMap>
+        </LoadScript>
       </SlideFade>
-
     </>
   );
 };

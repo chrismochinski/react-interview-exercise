@@ -20,9 +20,9 @@ import {
   InputRightElement,
   SimpleGrid,
   Box,
-  IconButton,
 } from "@chakra-ui/react";
 import { Card } from "@components/design/Card";
+
 import {
   searchSchoolDistricts,
   searchSchools,
@@ -30,49 +30,68 @@ import {
   NCESSchoolFeatureAttributes,
 } from "@utils/nces";
 
+import { parentProps } from "@utils/props";
+
 const Home: React.FC = () => {
-  const [searching, setSearching] = useState(false);
+  const [searchingDistrict, setSearchingDistrict] = useState(false); //left box content - search results for districts & schools
+  const [searchingSchool, setSearchingSchool] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(false); //fix
+  
+  const [searchingForDetails, setSearchingForDetails] = useState(false); //right box - getting details on user select
   const [districtSearch, setDistrictSearch] = useState<
-    NCESDistrictFeatureAttributes[] //district search
-  >([]);
+    NCESDistrictFeatureAttributes[]
+  >([]); //district search
   const [schoolSearch, setSchoolSearch] = useState<
-    NCESSchoolFeatureAttributes[] //school search
-  >([]);
+    NCESSchoolFeatureAttributes[]
+  >([]); //school search
 
   const [userDistrictInput, setUserDistrictInput] = useState(""); //user search input
-  const [selection, setSelection] = useState({});  //user selection
-  const [schoolSelected, setSchoolSelected] = useState(false) //determines whether we display map
+  const [selection, setSelection] = useState<NCESSchoolFeatureAttributes>({}); //user selection of school
+  const [schoolSelected, setSchoolSelected] = useState(false); //determines whether we display map
+  // const [districtSelection, setDistrictSelection] = useState<NCESDistrictFeatureAttributes>({});
 
-  const handleDistrictClick = async (event: any) => {
+  const handleSearchClick = async (event: any) => {
     event.preventDefault();
+    //fix
+    setSchoolSelected(false);
+    setSchoolSearch([]);
+    setSelection(
+      {});
     if (!userDistrictInput) {
       console.log("error - form required");
-
     } else {
-      setSearching(true);
-      console.log("in handleDistrictClick, searching:", userDistrictInput);
+      setSearchingDistrict(true);
+      console.log("in handleSearchClick, searching:", userDistrictInput);
 
-      const demoDistrictSearch = await searchSchoolDistricts(
+      const commitDistrictSearch = await searchSchoolDistricts(
         userDistrictInput //user input
       );
-      setDistrictSearch(demoDistrictSearch);
-      console.log("List of district responses:", demoDistrictSearch);
+      setDistrictSearch(commitDistrictSearch);
+      console.log("List of district responses:", commitDistrictSearch);
 
-      const demoSchoolSearch = await searchSchools(
-        "k",
-        demoDistrictSearch[0].LEAID
-      );
-      setSchoolSearch(demoSchoolSearch);
-
-      console.log("List of associated schools:", demoSchoolSearch);
     }
     resultHeader();
-    setSearching(false);
+    setSearchingDistrict(false);
+  };
+
+  //when selecting a district from the list from which to get list of schools
+  const handleDistrictSelect = async (selectedDistrict: string) => {
+    setSchoolSelected(false)
+    setSearchingSchool(true);
+    console.log("selected:", selectedDistrict);
+    const demoSchoolSearch = await searchSchools(
+      "k",
+      selectedDistrict
+    );
+    console.log("List of associated schools:", demoSchoolSearch);
+    setSchoolSearch(demoSchoolSearch);
+  setSearchingSchool(false);
   };
 
   const resultHeader = () => {
+    // builds the header based on search results
     if (0 === districtSearch.length) {
-      return ;
+      return;
     } else if (1 === districtSearch.length) {
       return `1 District Result for "${userDistrictInput}"`;
     } else if (100 < districtSearch.length) {
@@ -86,24 +105,25 @@ const Home: React.FC = () => {
       );
       return;
     } else {
-      return `${districtSearch.length} results for "${userDistrictInput}"`;
+      return `${districtSearch.length} District Results for "${userDistrictInput}"`;
     }
   };
 
   const displayExtraInfo = (selectedObject: any) => {
     console.log("clicked", selectedObject.NAME);
     setSchoolSelected(true);
-    if (undefined === selectedObject.LAT || undefined === selectedObject.LON) {
+    if (undefined === selectedObject.LAT || undefined === selectedObject.LON) { //null check
       console.log("sorry - location service unavailable");
     } else {
       console.log("Latitude:", selectedObject.LAT);
-      console.log("Longitude:", selectedObject.LON)
+      console.log("Longitude:", selectedObject.LON);
       setSelection(selectedObject);
     }
+    console.log('selection is:', selection)
   };
 
   return (
-    <Center padding="100px 0" >
+    <Center padding="100px 0">
       <Container className="home-container" maxW="container.lg">
         <ScaleFade initialScale={0.9} in={true}>
           <Card variant="rounded" borderColor="blue">
@@ -113,7 +133,7 @@ const Home: React.FC = () => {
 
             <Divider style={{ margin: "10px 0" }} />
 
-            <form onSubmit={() => handleDistrictClick(event)}>
+            <form onSubmit={() => handleSearchClick(event)}>
               <HStack spacing="24px">
                 <InputGroup>
                   <Input
@@ -134,60 +154,65 @@ const Home: React.FC = () => {
               </HStack>
             </form>
 
-            <SimpleGrid minChildWidth="300px" columns={2} spacing={10}>
+            <SimpleGrid minChildWidth="270px" columns={3} spacing={6}>
               <Box>
-                <Text fontWeight="400">
-                  {searching ? <Spinner /> : <></>}
+                <Text fontWeight="400">{searchingDistrict ? <Spinner /> : <></>}</Text>
+                <Text>{resultHeader()}</Text>
 
-                  <Text>{resultHeader()}</Text>
-
-                  <br />
-
-                  {50 < districtSearch.length ? (
-                    <></>
-                  ) : (
-                    <UnorderedList>
-                      {districtSearch.map((result) => (
-                        <ListItem fontWeight="200" key={result.NAME}>
-                          {result.NAME}{" "}
-                        </ListItem>
-                      ))}
-                    </UnorderedList>
-                  )}
-                </Text>
                 <br />
 
-                <Text fontWeight="400">
-                  {searching ? <Spinner /> : <></>}
-
-                  {(!searching && schoolSearch.length < 1) ||
-                  50 < districtSearch.length ? (
-                    <></>
-                  ) : (
-                    <Text className="schoolResultsTitle">
-                      {schoolSearch.length} Associated School Results
-                    </Text>
-                  )}
-                  <br />
+                {50 < districtSearch.length ? (
+                  <></>
+                ) : (
                   <UnorderedList>
-                    {schoolSearch.map((result) => (
-                      <ListItem fontWeight="200" key={result.NAME}>
-                        {result.NAME}{" "}
-                        <InfoIcon
-                          color="#DDB94F85"
-                          className="i-icon"
-                          onClick={() => displayExtraInfo(result)}
-                        />
+                    {districtSearch.map((result) => (
+                      <ListItem
+                        fontWeight="200"
+                        key={result.LEAID}
+                        onClick={() => handleDistrictSelect(result.LEAID)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {result.NAME}<InfoIcon
+                        color="#DDB94F85"
+                        className="i-icon"
+                      />
                       </ListItem>
                     ))}
                   </UnorderedList>
-                </Text>
+                )}
+                <br />
+              </Box>
+
+
+              <Box>
+                <Text fontWeight="400">{searchingSchool ? <Spinner /> : <></>}</Text>
+
+                {50 < districtSearch.length ? (
+                  // fix
+                  <></>
+                ) : (
+                  <Text className="schoolResultsTitle">
+                    {schoolSearch.length} Associated School Results
+                  </Text>
+                )}
+                <br />
+                <UnorderedList>
+                  {schoolSearch.map((result) => (
+                    <ListItem fontWeight="200" key={result.NAME}>
+                      {result.NAME}{" "}
+                      <InfoIcon
+                        color="#DDB94F85"
+                        className="i-icon"
+                        onClick={() => displayExtraInfo(result)}
+                      />
+                    </ListItem>
+                  ))}
+                </UnorderedList>
               </Box>
               <Box w="100%">
-
                 <DetailsComponent
-                  lat={selection.LAT}
-                  lon={selection.LON}
+                  lat={selection.LAT!}
+                  lon={selection.LON!}
                   name={selection.NAME}
                   street={selection.STREET}
                   city={selection.CITY}
@@ -195,9 +220,7 @@ const Home: React.FC = () => {
                   zip={selection.ZIP}
                   county={selection.NMCNTY}
                   schoolSelected={schoolSelected}
-                  // selection={selection}
                 />
-
               </Box>
             </SimpleGrid>
           </Card>
