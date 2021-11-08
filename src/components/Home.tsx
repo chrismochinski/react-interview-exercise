@@ -8,7 +8,6 @@ import {
   Center,
   Heading,
   Text,
-  Icon,
   Input,
   ScaleFade,
   Divider,
@@ -34,10 +33,11 @@ import { parentProps } from "@utils/props";
 
 const Home: React.FC = () => {
   const [searchingDistrict, setSearchingDistrict] = useState(false); //left box content - search results for districts & schools
-  const [searchingSchool, setSearchingSchool] = useState(false);
-  const [loadingDetails, setLoadingDetails] = useState(false); //fix
-  
-  const [searchingForDetails, setSearchingForDetails] = useState(false); //right box - getting details on user select
+  const [searchingSchool, setSearchingSchool] = useState(false); //searing school boolean state
+
+  const [initialDistrictSearch, setInitialDistrictSearch] = useState(false); //did an initial District search happen?
+  const [initialSchoolSearch, setInitialSchoolSearch] = useState(false); //did an initial School search happen?
+
   const [districtSearch, setDistrictSearch] = useState<
     NCESDistrictFeatureAttributes[]
   >([]); //district search
@@ -48,17 +48,15 @@ const Home: React.FC = () => {
   const [userDistrictInput, setUserDistrictInput] = useState(""); //user search input
   const [selection, setSelection] = useState<NCESSchoolFeatureAttributes>({}); //user selection of school
   const [schoolSelected, setSchoolSelected] = useState(false); //determines whether we display map
-  // const [districtSelection, setDistrictSelection] = useState<NCESDistrictFeatureAttributes>({});
 
   const handleSearchClick = async (event: any) => {
     event.preventDefault();
-    //fix
     setSchoolSelected(false);
-    setSchoolSearch([]);
-    setSelection(
-      {});
+    setSchoolSearch([]); //clear school search array (middle column)
+    setSelection({});
     if (!userDistrictInput) {
       console.log("error - form required");
+      //fix fire error toast
     } else {
       setSearchingDistrict(true);
       console.log("in handleSearchClick, searching:", userDistrictInput);
@@ -68,30 +66,30 @@ const Home: React.FC = () => {
       );
       setDistrictSearch(commitDistrictSearch);
       console.log("List of district responses:", commitDistrictSearch);
-
     }
-    resultHeader();
-    setSearchingDistrict(false);
+    districtResultHeader();
+    setSearchingDistrict(false); //district search is complete
+    setInitialDistrictSearch(true); //initial district search is complete - this remains true - a search HAS occurred 
+
   };
 
   //when selecting a district from the list from which to get list of schools
   const handleDistrictSelect = async (selectedDistrict: string) => {
-    setSchoolSelected(false)
+    setSchoolSelected(false);
     setSearchingSchool(true);
     console.log("selected:", selectedDistrict);
-    const demoSchoolSearch = await searchSchools(
-      "k",
-      selectedDistrict
-    );
-    console.log("List of associated schools:", demoSchoolSearch);
-    setSchoolSearch(demoSchoolSearch);
-  setSearchingSchool(false);
+    const commitSchoolSearch = await searchSchools("k", selectedDistrict);
+    console.log("List of associated schools:", commitSchoolSearch);
+    setSchoolSearch(commitSchoolSearch);
+    setSearchingSchool(false);
   };
 
-  const resultHeader = () => {
-    // builds the header based on search results
-    if (0 === districtSearch.length) {
-      return;
+  const districtResultHeader = () => {
+    // builds the DISTRICT RESULTS header based on search results
+    if (!initialDistrictSearch &&  0 === districtSearch.length) {
+      return; 
+    } else if( initialDistrictSearch && 0 === districtSearch.length) {
+      return `no results for "${userDistrictInput}".`;
     } else if (1 === districtSearch.length) {
       return `1 District Result for "${userDistrictInput}"`;
     } else if (100 < districtSearch.length) {
@@ -109,17 +107,25 @@ const Home: React.FC = () => {
     }
   };
 
+
+
+
+
+  
+
   const displayExtraInfo = (selectedObject: any) => {
     console.log("clicked", selectedObject.NAME);
     setSchoolSelected(true);
-    if (undefined === selectedObject.LAT || undefined === selectedObject.LON) { //null check
+    if (undefined === selectedObject.LAT || undefined === selectedObject.LON) {
+      //null check
       console.log("sorry - location service unavailable");
+      //fix fire error toast
     } else {
       console.log("Latitude:", selectedObject.LAT);
       console.log("Longitude:", selectedObject.LON);
       setSelection(selectedObject);
     }
-    console.log('selection is:', selection)
+    console.log("selection is:", selection);
   };
 
   return (
@@ -156,8 +162,10 @@ const Home: React.FC = () => {
 
             <SimpleGrid minChildWidth="270px" columns={3} spacing={6}>
               <Box>
-                <Text fontWeight="400">{searchingDistrict ? <Spinner /> : <></>}</Text>
-                <Text>{resultHeader()}</Text>
+                <Text fontWeight="400">
+                  {searchingDistrict ? <Spinner /> : <></>}
+                </Text>
+                <Text>{districtResultHeader()}</Text>
 
                 <br />
 
@@ -172,10 +180,8 @@ const Home: React.FC = () => {
                         onClick={() => handleDistrictSelect(result.LEAID)}
                         style={{ cursor: "pointer" }}
                       >
-                        {result.NAME}<InfoIcon
-                        color="#DDB94F85"
-                        className="i-icon"
-                      />
+                        {result.NAME}{" "}
+                        <InfoIcon color="#DDB94F85" className="i-icon" />
                       </ListItem>
                     ))}
                   </UnorderedList>
@@ -183,18 +189,20 @@ const Home: React.FC = () => {
                 <br />
               </Box>
 
-
               <Box>
-                <Text fontWeight="400">{searchingSchool ? <Spinner /> : <></>}</Text>
+                <Text fontWeight="400">
+                  {searchingSchool ? <Spinner /> : <></>}
+                </Text>
 
-                {50 < districtSearch.length ? (
-                  // fix
+                {/* {50 < districtSearch.length ? (
+                  fix
                   <></>
-                ) : (
-                  <Text className="schoolResultsTitle">
-                    {schoolSearch.length} Associated School Results
-                  </Text>
-                )}
+                ) : ( */}
+
+                <Text className="schoolResultsTitle">
+                  {schoolSearch.length} Associated School Results
+                </Text>
+                {/* )} */}
                 <br />
                 <UnorderedList>
                   {schoolSearch.map((result) => (
