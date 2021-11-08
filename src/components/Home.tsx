@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   const [searchingSchool, setSearchingSchool] = useState(false); //searing school boolean state
 
   const [initialDistrictSearch, setInitialDistrictSearch] = useState(false); //did an initial District search happen?
-  const [initialSchoolSearch, setInitialSchoolSearch] = useState(false); //did an initial School search happen?
+  const [initialSchoolClick, setInitialSchoolClick] = useState(false); //did an initial School click happen?
 
   const [districtSearch, setDistrictSearch] = useState<
     NCESDistrictFeatureAttributes[]
@@ -51,7 +51,8 @@ const Home: React.FC = () => {
 
   const handleSearchClick = async (event: any) => {
     event.preventDefault();
-    setSchoolSelected(false);
+    setInitialSchoolClick(false);
+    setSchoolSelected(false); //has a school been selected? If false, clear details (right column)
     setSchoolSearch([]); //clear school search array (middle column)
     setSelection({});
     if (!userDistrictInput) {
@@ -69,8 +70,7 @@ const Home: React.FC = () => {
     }
     districtResultHeader();
     setSearchingDistrict(false); //district search is complete
-    setInitialDistrictSearch(true); //initial district search is complete - this remains true - a search HAS occurred 
-
+    setInitialDistrictSearch(true); //initial district search is complete - this remains true - a search HAS occurred
   };
 
   //when selecting a district from the list from which to get list of schools
@@ -82,14 +82,15 @@ const Home: React.FC = () => {
     console.log("List of associated schools:", commitSchoolSearch);
     setSchoolSearch(commitSchoolSearch);
     setSearchingSchool(false);
+    setInitialSchoolClick(true);
   };
 
   const districtResultHeader = () => {
     // builds the DISTRICT RESULTS header based on search results
-    if (!initialDistrictSearch &&  0 === districtSearch.length) {
-      return; 
-    } else if( initialDistrictSearch && 0 === districtSearch.length) {
-      return `no results for "${userDistrictInput}".`;
+    if (!initialDistrictSearch && 0 === districtSearch.length) {
+      return;
+    } else if (initialDistrictSearch && 0 === districtSearch.length) {
+      return `No Results for "${userDistrictInput}".`;
     } else if (1 === districtSearch.length) {
       return `1 District Result for "${userDistrictInput}"`;
     } else if (100 < districtSearch.length) {
@@ -107,11 +108,18 @@ const Home: React.FC = () => {
     }
   };
 
-
-
-
-
-  
+  const schoolResultsHeader = () => {
+// builds the SCHOOL RESULTS header based on which district is clicked
+if (!initialSchoolClick && 0 === schoolSearch.length) {
+  return;
+} else if (initialSchoolClick && 0 === schoolSearch.length) {
+  return `No Associated School Results`;
+} else if (1 === schoolSearch.length) {
+  return `1 Associated School Result`;
+} else {
+  return `${schoolSearch.length} Associated School Results`
+}
+  };
 
   const displayExtraInfo = (selectedObject: any) => {
     console.log("clicked", selectedObject.NAME);
@@ -194,15 +202,8 @@ const Home: React.FC = () => {
                   {searchingSchool ? <Spinner /> : <></>}
                 </Text>
 
-                {/* {50 < districtSearch.length ? (
-                  fix
-                  <></>
-                ) : ( */}
+                <Text>{schoolResultsHeader()}</Text>
 
-                <Text className="schoolResultsTitle">
-                  {schoolSearch.length} Associated School Results
-                </Text>
-                {/* )} */}
                 <br />
                 <UnorderedList>
                   {schoolSearch.map((result) => (
