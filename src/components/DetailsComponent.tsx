@@ -12,7 +12,6 @@ type infoProps = {
 };
 
 import { Text, ScaleFade } from "@chakra-ui/react";
-import { Card } from "@components/design/Card";
 import MapComponent from "./MapComponent";
 
 const DetailsComponent: React.FC<infoProps> = ({

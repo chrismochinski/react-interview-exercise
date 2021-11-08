@@ -1,66 +1,61 @@
-# Mo's School Data Finder!
+# **Mo's School Data Finder!**
 
-## This app...
+## This prototype app...
 
-🍩 Searches for a US school district<br />
-🍩 Expands on a button click to show associated schools <br />
-🍩 Expands _again_ on _another_ button click to show details about that school
+🍩 searches for a US school district<br />
+🍩 expands on a button click to show all associated schools <br />
+🍩 expands _again_ on _another_ button click to show details about that school (including map location) <br />
+🍩 is [mostly] responsive <br />
+🍩 was super fun to build!
+
 
 ---
 
-### [<u>Original Demo</u>](https://characterstrong.github.io/react-interview-exercise/)
+### [<u>Original Demo (</u>](https://characterstrong.github.io/react-interview-exercise/)
 
-## New Demo:
+## New Demo (Desktop):
+
+<img src="./README-visuals/school-demo-desktop.gif" alt="mo" style="width: 100%">
+
+
+
+## ...and Mobile: 
+<br />
+
+<img align="left" src="./README-visuals/school-demo-mobile.gif" alt="mo" style="width: 40%; margin: 20px" >
 
 ---
 
-## Overview of this repository
+## Overview
 
-- [Vite](https://vitejs.dev/guide/) Typescript React base
-- [Chakra-UI](https://chakra-ui.com/docs/principles) interface styling (feel free to replace with your favorite UI)
-- [Pretty resolver](tsconfig.paths.json), aliased modules for readability: `import Home from "@components/Home"`
-- [Github Actions](.github/workflows/push.yaml) to build and deploy this project to Github Pages (creates `gh-pages` branch)
+Rather than basking in my comfort zone, I spent some time learning the basics of Chakra UI and diving deeper into Typescript (with which I wasn't familiar, originally). I'm thrilled to say that this gave me the opportunity establish a basic understanding of both. I absolutely love learning!
 
-### Getting Started
+---
 
-1. Clone the repository `git clone https://github.com/CharacterStrong/react-interview-exercise`
-2. Install dependencies `cd react-interview-exercise && npm i`
-3. Run local development server `npm run dev`
-4. Navigate to http://localhost:3000
-5. Follow the Prompt
-6. Create a new Github repository, ensure @AshMartian can access
+## Additional Dependencies
 
-## Prompt
+[React Icons](https://www.npmjs.com/package/react-icons) 
 
-The goal of this exercise is to build a prototype utility that gives users ability to search and view school district information from [NCES + ArcGIS apis](https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api). See [this dataset and others](https://data-nces.opendata.arcgis.com/datasets/school-district-characteristics-2019-20/explore). The api methods are already [implemented for you in this repository](src/utils/nces.ts), your objective is to create an interactive interface to filter and view the selected data. 
+[React Google Maps API](https://www.npmjs.com/package/@react-google-maps/api)
 
-- Push all your changes to Github
-    - Looking for semi-descriptive commit messages
-- Working out of [Home.tsx](/src/components/Home.tsx):
-    - Add the needed React `useEffect` statements for district and school searching
-    - Create the UX around these 2 functions, utilize search inputs, lists, and a view container
-    - District and School selection functionality, display a list, then when selected show more information
-- Please enable Github Pages and Github Actions in your Fork and update the url in your README.md
-    - If your repository is not named `react-interview-exercise` you must update [vite.config.ts](vite.config.ts) "base" path
+## Notes / Improvements
 
-### Considerations
+- Like CharacterStrong, I am highly design oriented. The client-facing portion of an interactive experience is _super_ important in the grand scheme of things. If given the opportunity and project timeline, I would visually and interactively enhance parts of this UI, including an empty search field error toast and a flashier appearance of the expanding/additional content.
+- While I didn't hard code the Google Maps API key, I would normally take steps to protect it on a backend. Additionally, I assume the developer map will suffice for this demo.
+- Admission - I wasn't sure what the "k" search param was at a glance. I realized late in the game the intended functionality and, if given the opportunity and project timeline, I would append an additional input on district click that would further narrow the school search. For now, the string is blank and all schools in a district will appear when clicked.
+- I'm a huge fan of learning, and I can't get enough of growing as a developer. I hope that shows in my excitement, and please forgive me for any rudimentary Typescript misses.
 
-- If there is a requirement for more components, create them for optimal code readability and performance
-- If something should be dramatically changed in the setup or organization of this repository, do so or document your perspective
-- Most importantly, have fun! Express your passion for web development, we are lifelong learners and should enjoy tackling difficult challenges
+---
 
-## Above and Beyond: Extra Credit
+## Bottom Line
 
-- CharacterStrong is highly design oriented, and aiming to provide students with animated interactive content. Show how you convey this in your UX. Reference https://rc.characterstrong.com for a glimpse into future design considerations.
-- There are issues with this repository, if you see something you don't like, add a comment/fix them!
-- Could you display school(s) on a [Google Map](https://tomchentw.github.io/react-google-maps/#introduction)? (API Key in [maps.ts](src/utils/maps.ts))
-- Are there any other [NCES APIs](https://data-nces.opendata.arcgis.com/search?tags=nces) that might be useful for this tool?
+I'm thrilled to have been chosen as even a candidate for this role, and I appreciate the opportunity to have come this far! I'm super excited to see what the future holds. Please feel free to reach out with any questions, comments, updates etc. that you may have, and thank you so much again!
 
-## What Happens Next?
+###### _Cheers,_
 
-CharacterStrong tech team will review your Github Fork, share the built interface with interested colleagues, and reach out to you so we can review your submission and ask questions.
+###### -_Chris "Mo" Mochinski_
 
-
+---
 
 <img align="left" src="./README-visuals/readme-signature-pic.png" alt="mo" style="width:150px; margin: 10px">
 

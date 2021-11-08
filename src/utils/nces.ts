@@ -77,7 +77,7 @@ const searchSchoolDistricts = async (
 };
 
 const searchSchools = async (
-  name: string,
+  name: string, //"k"?
   district?: string
 ): Promise<NCESSchoolFeatureAttributes[]> => {
   let privateSchoolEndpoint = `https://services1.arcgis.com/Ua5sjt3LWTPigjyD/arcgis/rest/services/Private_School_Locations_Current/FeatureServer/0/query?where=UPPER(NAME) LIKE UPPER('%${name}%')${

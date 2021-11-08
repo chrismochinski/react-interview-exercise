@@ -11,7 +11,7 @@ import {
   Marker,
 } from "@react-google-maps/api";
 
-//map prop type assignment
+// map prop type assignment
 type mapProps = { 
   lat?: number;
   lon?: number;
@@ -19,13 +19,13 @@ type mapProps = {
 
 const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
 
-  //size of map
+  // size of map
   const containerStyle = {
     width: "250px",
     height: "250px",
   };
 
-  //set center of map (this is what will center/appear by default)
+  // set center of map (this is what will center/appear by default)
   const center = {
     lat: lat,
     lng: lon,

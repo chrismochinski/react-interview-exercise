@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Search2Icon, InfoIcon } from "@chakra-ui/icons";
 import DetailsComponent from "./DetailsComponent";
-import { useDisclosure } from "@chakra-ui/react";
 
 import {
   Container,
@@ -31,55 +30,52 @@ import {
 } from "@utils/nces";
 
 const Home: React.FC = () => {
+  // state of searching for district or school - controls such aspects as spinner and headline results
+  const [searchingDistrict, setSearchingDistrict] = useState(false);
+  const [searchingSchool, setSearchingSchool] = useState(false);
 
-  const [searchingDistrict, setSearchingDistrict] = useState(false); //left box content - search results for districts & schools
-  const [searchingSchool, setSearchingSchool] = useState(false); //searing school boolean state
-
-  const [initialDistrictSearch, setInitialDistrictSearch] = useState(false); //did an initial District search happen?
-  const [initialSchoolClick, setInitialSchoolClick] = useState(false); //did an initial School click happen?
+  // initial search states for appending district and school headlines
+  const [initialDistrictSearch, setInitialDistrictSearch] = useState(false);
+  const [initialSchoolClick, setInitialSchoolClick] = useState(false);
 
   const [districtSearch, setDistrictSearch] = useState<
     NCESDistrictFeatureAttributes[]
-  >([]); //district search
+  >([]); // district search
   const [schoolSearch, setSchoolSearch] = useState<
     NCESSchoolFeatureAttributes[]
-  >([]); //school search
+  >([]); // school search
 
-  const [userDistrictInput, setUserDistrictInput] = useState(""); //user search input
-  const [selection, setSelection] = useState<NCESSchoolFeatureAttributes>({}); //user selection of school
-  const [schoolSelected, setSchoolSelected] = useState(false); //determines whether we display map
+  const [userDistrictInput, setUserDistrictInput] = useState(""); // user search input
+  const [schoolSelection, setSchoolSelection] = useState<NCESSchoolFeatureAttributes>({}); // user selection of school 
+  const [schoolSelected, setSchoolSelected] = useState(false); // bool - determines whether we display map
 
   const handleSearchClick = async (event: any) => {
     event.preventDefault();
     setInitialSchoolClick(false);
     setSchoolSelected(false); //has a school been selected? If false, clear details (right column)
     setSchoolSearch([]); //clear school search array (middle column)
-    setSelection({});
+    setSchoolSelection({});
     if (!userDistrictInput) {
-      console.log("error - form required");
+      // would prefer to add a more elegant error approach on blank input
+      return;
     } else {
       setSearchingDistrict(true);
-      console.log("in handleSearchClick, searching:", userDistrictInput);
-
       const commitDistrictSearch = await searchSchoolDistricts(
         userDistrictInput //user input
       );
       setDistrictSearch(commitDistrictSearch);
-      console.log("List of district responses:", commitDistrictSearch);
     }
     districtResultHeader();
     setSearchingDistrict(false); //district search is complete
     setInitialDistrictSearch(true); //initial district search is complete - this remains true - a search HAS occurred
   };
 
-  //when selecting a district from the list from which to get list of schools
+  // when selecting a district from the list from which to get list of schools
   const handleDistrictSelect = async (selectedDistrict: string) => {
     setSchoolSelected(false);
     setSearchingSchool(true);
-    console.log("selected:", selectedDistrict);
-    const commitSchoolSearch = await searchSchools("k", selectedDistrict); 
-    // I never quite figured out what the "k" was for and I'm real curious!
-    console.log("List of associated schools:", commitSchoolSearch);
+    const commitSchoolSearch = await searchSchools("", selectedDistrict); 
+    // would like to append an additional narrow school search
     setSchoolSearch(commitSchoolSearch);
     setSearchingSchool(false);
     setInitialSchoolClick(true);
@@ -88,13 +84,16 @@ const Home: React.FC = () => {
   const districtResultHeader = () => {
     // builds the DISTRICT RESULTS header based on search results
     if (!initialDistrictSearch && 0 === districtSearch.length) {
+      // show nothing if NO init search and array empty
       return;
     } else if (initialDistrictSearch && 0 === districtSearch.length) {
+      // show no results if YES init search & array empty
       return `No Results for "${userDistrictInput}".`;
     } else if (1 === districtSearch.length) {
+      // if one response
       return `1 District Result for "${userDistrictInput}"`;
     } else if (100 < districtSearch.length) {
-      console.log("fire error - please narrow search");
+      //too many results = please narrow search
       return (
         <Text className="too-many-results-header">
           Too Many Results
@@ -104,12 +103,12 @@ const Home: React.FC = () => {
       );
       return;
     } else {
-      return `${districtSearch.length} District Results for "${userDistrictInput}"`;
+      return `${districtSearch.length} District Results for "${userDistrictInput}"`; //search complete, mult results
     }
   };
 
   const schoolResultsHeader = () => {
-    // builds the SCHOOL RESULTS header based on which district is clicked
+    // builds the SCHOOL RESULTS header based on which district is clicked & result
     if (!initialSchoolClick && 0 === schoolSearch.length) {
       return;
     } else if (initialSchoolClick && 0 === schoolSearch.length) {
@@ -122,17 +121,12 @@ const Home: React.FC = () => {
   };
 
   // school list item clicked
-  const displayExtraInfo = (selectedObject: any) => {
-    console.log("clicked", selectedObject.NAME);
+  const displayExtraInfo = (selectedObject: NCESSchoolFeatureAttributes) => {
+    console.log(selectedObject);
     setSchoolSelected(true);
-    if (undefined === selectedObject.LAT || undefined === selectedObject.LON) {
-      console.log("sorry - location service unavailable"); //null check
-    } else {
-      console.log("Latitude:", selectedObject.LAT);
-      console.log("Longitude:", selectedObject.LON);
-      setSelection(selectedObject);
-    }
-    console.log("selection is:", selection);
+    console.log("Latitude:", selectedObject.LAT);
+    console.log("Longitude:", selectedObject.LON);
+    setSchoolSelection(selectedObject);
   };
 
   return (
@@ -174,7 +168,7 @@ const Home: React.FC = () => {
             </form>
 
             {/* GRID, three columns: districts, schools, more info/map */}
-            {/* Rows are basic responsive on screen collapse  */}
+            {/* Rows are basic responsive on screen collapse (250px min each) */}
             <SimpleGrid minChildWidth="250px" columns={3} spacing={8}>
               {/* Box 1 - left side - district results */}
               <Box className="boxLeft">
@@ -185,7 +179,7 @@ const Home: React.FC = () => {
 
                 <br />
 
-                {50 < districtSearch.length ? (
+                {100 < districtSearch.length ? ( //over 100 results = don't render list
                   <></>
                 ) : (
                   <UnorderedList className="ul" listStyleType="none">
@@ -230,14 +224,14 @@ const Home: React.FC = () => {
               {/* Box 3 - right side - more info */}
               <Box className="boxRight">
                 <DetailsComponent
-                  lat={selection.LAT!}
-                  lon={selection.LON!}
-                  name={selection.NAME}
-                  street={selection.STREET}
-                  city={selection.CITY}
-                  state={selection.STATE}
-                  zip={selection.ZIP}
-                  county={selection.NMCNTY}
+                  lat={schoolSelection.LAT!}
+                  lon={schoolSelection.LON!}
+                  name={schoolSelection.NAME}
+                  street={schoolSelection.STREET}
+                  city={schoolSelection.CITY}
+                  state={schoolSelection.STATE}
+                  zip={schoolSelection.ZIP}
+                  county={schoolSelection.NMCNTY}
                   schoolSelected={schoolSelected}
                 />
               </Box>
