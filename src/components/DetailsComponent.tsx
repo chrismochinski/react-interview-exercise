@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+//object props to be used on this page
 type infoProps = {
   lat?: number;
   lon?: number;
@@ -42,6 +41,7 @@ const DetailsComponent: React.FC<infoProps> = ({
 
           <Text>{county}</Text>
           <br />
+
           <MapComponent lat={lat} lon={lon} />
         </div>
       )}

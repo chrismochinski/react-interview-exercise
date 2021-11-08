@@ -11,19 +11,21 @@ import {
   Marker,
 } from "@react-google-maps/api";
 
-type mapProps = {
-  //props items
+//map prop type assignment
+type mapProps = { 
   lat?: number;
   lon?: number;
 };
 
 const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
 
+  //size of map
   const containerStyle = {
-    width: "300px",
-    height: "300px",
+    width: "250px",
+    height: "250px",
   };
 
+  //set center of map (this is what will center/appear by default)
   const center = {
     lat: lat,
     lng: lon,
@@ -38,11 +40,7 @@ const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
             center={center}
             zoom={10}
           >
-            <Marker
-              position={center}
-              clickable={true}
-              // draggable={true}
-            ></Marker>
+            <Marker position={center} clickable={true}></Marker>
           </GoogleMap>
         </LoadScript>
       </SlideFade>

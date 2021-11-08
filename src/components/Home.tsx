@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Search2Icon, InfoIcon } from "@chakra-ui/icons";
 import DetailsComponent from "./DetailsComponent";
 
@@ -29,8 +29,6 @@ import {
   NCESSchoolFeatureAttributes,
 } from "@utils/nces";
 
-import { parentProps } from "@utils/props";
-
 const Home: React.FC = () => {
   const [searchingDistrict, setSearchingDistrict] = useState(false); //left box content - search results for districts & schools
   const [searchingSchool, setSearchingSchool] = useState(false); //searing school boolean state
@@ -51,7 +49,7 @@ const Home: React.FC = () => {
 
   const handleSearchClick = async (event: any) => {
     event.preventDefault();
-    setInitialSchoolClick(false);
+    setInitialSchoolClick(false); 
     setSchoolSelected(false); //has a school been selected? If false, clear details (right column)
     setSchoolSearch([]); //clear school search array (middle column)
     setSelection({});
@@ -109,16 +107,16 @@ const Home: React.FC = () => {
   };
 
   const schoolResultsHeader = () => {
-// builds the SCHOOL RESULTS header based on which district is clicked
-if (!initialSchoolClick && 0 === schoolSearch.length) {
-  return;
-} else if (initialSchoolClick && 0 === schoolSearch.length) {
-  return `No Associated School Results`;
-} else if (1 === schoolSearch.length) {
-  return `1 Associated School Result`;
-} else {
-  return `${schoolSearch.length} Associated School Results`
-}
+    // builds the SCHOOL RESULTS header based on which district is clicked
+    if (!initialSchoolClick && 0 === schoolSearch.length) {
+      return;
+    } else if (initialSchoolClick && 0 === schoolSearch.length) {
+      return `No Associated School Results`;
+    } else if (1 === schoolSearch.length) {
+      return `1 Associated School Result`;
+    } else {
+      return `${schoolSearch.length} Associated School Results`;
+    }
   };
 
   const displayExtraInfo = (selectedObject: any) => {
@@ -142,8 +140,12 @@ if (!initialSchoolClick && 0 === schoolSearch.length) {
         <ScaleFade initialScale={0.9} in={true}>
           <Card variant="rounded" borderColor="blue">
             <Heading align="center" textTransform="uppercase" fontWeight="600">
-              School Data Finder
+              School Data Finder!
             </Heading>
+            <Text className="subtitle">
+              Welcome to our comprehensive school and school district data
+              center! Let's get started.
+            </Text>
 
             <Divider style={{ margin: "10px 0" }} />
 
@@ -151,6 +153,7 @@ if (!initialSchoolClick && 0 === schoolSearch.length) {
               <HStack spacing="24px">
                 <InputGroup>
                   <Input
+                    required
                     placeholder="Search for a District"
                     value={userDistrictInput}
                     size="md"
@@ -168,8 +171,8 @@ if (!initialSchoolClick && 0 === schoolSearch.length) {
               </HStack>
             </form>
 
-            <SimpleGrid minChildWidth="270px" columns={3} spacing={6}>
-              <Box>
+            <SimpleGrid minChildWidth="250px" columns={3} spacing={8}>
+              <Box className="boxLeft">
                 <Text fontWeight="400">
                   {searchingDistrict ? <Spinner /> : <></>}
                 </Text>
@@ -180,13 +183,12 @@ if (!initialSchoolClick && 0 === schoolSearch.length) {
                 {50 < districtSearch.length ? (
                   <></>
                 ) : (
-                  <UnorderedList>
+                  <UnorderedList className="ul" listStyleType="none">
                     {districtSearch.map((result) => (
                       <ListItem
-                        fontWeight="200"
+                        className="li"
                         key={result.LEAID}
                         onClick={() => handleDistrictSelect(result.LEAID)}
-                        style={{ cursor: "pointer" }}
                       >
                         {result.NAME}{" "}
                         <InfoIcon color="#DDB94F85" className="i-icon" />
@@ -197,7 +199,7 @@ if (!initialSchoolClick && 0 === schoolSearch.length) {
                 <br />
               </Box>
 
-              <Box>
+              <Box className="boxCenter">
                 <Text fontWeight="400">
                   {searchingSchool ? <Spinner /> : <></>}
                 </Text>
@@ -205,20 +207,20 @@ if (!initialSchoolClick && 0 === schoolSearch.length) {
                 <Text>{schoolResultsHeader()}</Text>
 
                 <br />
-                <UnorderedList>
+                <UnorderedList className="ul" listStyleType="none">
                   {schoolSearch.map((result) => (
-                    <ListItem fontWeight="200" key={result.NAME}>
+                    <ListItem
+                      key={result.NAME}
+                      className="li"
+                      onClick={() => displayExtraInfo(result)}
+                    >
                       {result.NAME}{" "}
-                      <InfoIcon
-                        color="#DDB94F85"
-                        className="i-icon"
-                        onClick={() => displayExtraInfo(result)}
-                      />
+                      <InfoIcon color="#DDB94F85" className="i-icon" />
                     </ListItem>
                   ))}
                 </UnorderedList>
               </Box>
-              <Box w="100%">
+              <Box className="boxRight">
                 <DetailsComponent
                   lat={selection.LAT!}
                   lon={selection.LON!}

@@ -1,5 +1,5 @@
 * {
-  font-family: "Poppins",
+  font-family: "Poppins", // I have used this in various projects and saw it in the CharacterStrong CSS overview!
 }
 
 body {
@@ -68,6 +68,48 @@ code {
 
 // -------------added by mo-------------- //
 
+.li {
+  cursor: pointer;
+  font-weight: 300;
+  line-height: 24px;
+  // position: relative; 
+}
+
+// .li::after { 
+//   content: '';
+//   position: absolute;
+//   width: 100%;
+//   transform: scaleX(0);
+//   height: 1px;
+//   bottom: 0;
+//   left: 0;
+//   background-color: #DDB94F;
+//   transform-origin: left;
+//   transition: transform 0.3s ease-out;
+// }
+
+.li:hover {
+  cursor: pointer;
+  font-weight: 400;
+  // transform: scaleX(1);
+  // transform-origin: left;
+}
+
+.boxLeft {
+  text-align: left;
+  font-size: 14px;
+}
+
+.boxCenter {
+  text-align: left;
+  font-size: 14px;
+
+}
+
+.boxRight {
+  text-align: left;
+}
+
 .i-icon {
   margin-left: 2px;
 transform: scale(1.1);
@@ -88,13 +130,16 @@ transition-duration: .3s;
 
 .map-heading {
   font-weight: 500;
-  font-size: 30px;
+  font-size: 26px;
 }
 
 .home-container {
- 
+ text-align: center;
 }
 
+.subtitle {
+  font-size: 18px;
+}
 
 
 
