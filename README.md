@@ -11,7 +11,7 @@
 
 ---
 
-### [<u>Original Demo (</u>](https://characterstrong.github.io/react-interview-exercise/)
+### [<u>Demo (</u>](https://chrismochinski.github.io/react-interview-exercise/)
 
 ## New Demo (Desktop):
 
