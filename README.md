@@ -11,7 +11,7 @@
 
 ---
 
-### [<u>Demo (</u>](https://chrismochinski.github.io/react-interview-exercise/)
+### [Demo at: <u>(https://chrismochinski.github.io/react-interview-exercise/) </u>](https://chrismochinski.github.io/react-interview-exercise/)
 
 ## New Demo (Desktop):
 
