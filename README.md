@@ -38,6 +38,7 @@ Rather than basking in my comfort zone, I spent some time learning the basics of
 
 [React Google Maps API](https://www.npmjs.com/package/@react-google-maps/api)
 
+
 ## Notes / Improvements
 
 - Like CharacterStrong, I am highly design oriented. The client-facing portion of an interactive experience is _super_ important in the grand scheme of things. If given the opportunity and project timeline, I would visually and interactively enhance parts of this UI, including an empty search field error toast and a flashier appearance of the expanding/additional content.
