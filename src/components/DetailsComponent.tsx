@@ -1,7 +1,7 @@
 //object props to be used on this page
 type infoProps = {
-  lat?: number;
-  lon?: number;
+  lat: number;
+  lon: number;
   name?: string;
   street?: string;
   city?: string;
