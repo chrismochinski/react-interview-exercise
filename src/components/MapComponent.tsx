@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { SlideFade } from "@chakra-ui/react";
-import { Card } from "@components/design/Card";
 import { googleMapsKey } from "@utils/maps";
 
 import {
@@ -33,7 +31,6 @@ const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
 
   return (
     <>
-      <SlideFade offsetY="20px" in={true}>
         <LoadScript googleMapsApiKey={googleMapsKey}>
           <GoogleMap
             mapContainerStyle={containerStyle}
@@ -43,7 +40,6 @@ const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
             <Marker position={center} clickable={true}></Marker>
           </GoogleMap>
         </LoadScript>
-      </SlideFade>
     </>
   );
 };
