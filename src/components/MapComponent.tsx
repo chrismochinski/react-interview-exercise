@@ -13,8 +13,8 @@ import {
 
 // map prop type assignment
 type mapProps = { 
-  lat?: number;
-  lon?: number;
+  lat: number;
+  lon: number;
 };
 
 const MapComponent: React.FC<mapProps> = ({ lat, lon }) => {
